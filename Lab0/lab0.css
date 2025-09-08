@@ -1,0 +1,15 @@
+Body {
+Background: powderblue
+}
+
+h1{
+text-align: center;
+color: darkblue
+}
+
+fieldset {
+border-radius: 10px}
+
+button{
+float: right
+}
