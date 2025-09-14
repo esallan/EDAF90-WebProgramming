@@ -1,6 +1,6 @@
 import { expect, test as baseTest } from 'vitest';
-import { Salad } from './salad';
-import { inventory } from './inventory';
+import { Salad } from '../salad';
+import { inventory } from '../inventory';
 const saladNoGurka = {
   Bacon: {
     price: 10,

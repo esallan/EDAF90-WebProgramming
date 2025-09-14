@@ -11,33 +11,37 @@ class Salad {
   protected readonly ingredients: PartialInventory;
   readonly uuid;
 
-  constructor(init?: PartialInventory) {
-    this.ingredients = {};
-    this.uuid = "salad_" + "1"; //Salad.instanceCounter++;
+  constructor(init?: PartialInventory, uuid?: String) {
+    this.ingredients = init || {};
+    this.uuid = uuid || "salad_" + Salad.instanceCounter; //var innan hårdkodat till 1
+    if(!uuid){
+      Salad.instanceCounter++;
+    }
   }
 
   /**
    * @returns a new salad object with the ingredient @name added.
    */
   add(name: string, info: IngredientInfo): Salad {
+    const newSalad: PartialInventory = {...this.ingredients, [name]: info};
+    return new Salad(newSalad, this.uuid);
 
-
-    return this;
   }
 
   /**
    * @returns a new salad object with the ingredient @name removed.
    */
   remove(name: string): Salad {
-    return this;
+    const newSalad = {...this.ingredients};
+    delete newSalad[name];
+    return new Salad(newSalad, this.uuid);
   }
 
   /**
    * @returns the price of this salad.
    */
   price(): number {
-    return -1;
-    //must use array.prototype.reduce
+    return Object.values(this.ingredients).reduce((total, ingredient) => total + ingredient.price, 0);
   }
 
   /**
@@ -45,10 +49,14 @@ class Salad {
    * vegan is true if all ingredients are vegan.
    * lactose and gluten is true if any of the ingredients contain the allergenic
    */
-  info(): SaladInfo {
-    return { vegan: false, gluten: false, lactose: false };
-    //must use array.prototype.reduce
-  }
+ info(): SaladInfo {
+  return Object.values(this.ingredients)
+    .reduce((info: SaladInfo, ingredient) => ({
+      vegan: info.vegan && (ingredient.vegan || false),
+      gluten: info.gluten || (ingredient.gluten || false),
+      lactose: info.lactose || (ingredient.lactose || false)
+    }), { vegan: true, gluten: false, lactose: false });
+}
 
   /**
    * @param json is a JSON string with an array of Salad objects
