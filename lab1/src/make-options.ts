@@ -1,4 +1,4 @@
-import { IngredientType, inventory, PartialInventory } from "./inventory";
+import { IngredientType, Inventory, inventory, PartialInventory } from "./inventory";
 
 // remove comment below to see printouts
 
@@ -8,19 +8,23 @@ names.forEach((name) => console.log(name));
 for (const name in inventory) {
   console.log(name);
 }
+
 const myString = `We have ${names
   .sort((a, b) => a.localeCompare(b, "sv", { sensitivity: "case" }))
   .join(", ")} in stock.`;
 console.log(myString);
 
 function makeOptions(
-  inventory: PartialInventory,
+  inventory: Inventory,
   type: IngredientType
 ): string[] {
-  return Object.entries(inventory) // 1. alla [name, info] par
-    .filter(([name, info]) => info?.type === type) // 2. filtrera på type
-    .sort(([aName], [bName]) => aName.localeCompare(bName, "sv")) // 3. sortera
-    .map(([name]) => `<option value="${name}">${name}</option>`); // 4. <option>
+  return Object.entries(inventory)
+    .filter(([name, info]) => info?.type === type)
+    .sort(([aName], [bName]) => aName.localeCompare(bName, "sv"))
+    .map(
+      ([name, info]) =>
+        `<option value="${name}" key="${name}"> ${name}, ${info.price} kr</option>`
+    );
 }
 
 export { makeOptions };
