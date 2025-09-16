@@ -15,20 +15,28 @@ type PartialGourmetInventory = Readonly<
 class GourmetSalad extends Salad {
   protected readonly ingredients: PartialGourmetInventory;
 
-  constructor(init?: PartialGourmetInventory) {
-    super(init);
-    // TODO
-    this.ingredients = {};
+  constructor(init?: PartialGourmetInventory, uuid?: String) {
+    super(undefined, uuid);
+    this.ingredients = init ||  {};
   }
 
   add(name: string, info: IngredientInfo, amount = 1): GourmetSalad {
-    // TODO
-    return this;
+    const existing = this.ingredients[name as keyof GourmetInventory];
+    const newAmount = (existing?.amount || 0) + amount;
+    
+    // This line creates a new ingredient object by copying all properties from 'info'
+    // and adding/updating the 'amount' property to reflect the new total amount.
+    const updatedInfo: GourmetIngredientInfo = { ...info, amount: newAmount };
+    const newIngredients: PartialGourmetInventory = {
+      ...this.ingredients,
+       [name]: updatedInfo,
+    } as PartialGourmetInventory;
+
+    return new GourmetSalad(newIngredients);
   }
 
   price(): number {
-    // TODO
-    return -1;
+    return Object.values(this.ingredients).reduce((sum, info) => sum + info.price * info.amount, 0)
   }
 }
 
