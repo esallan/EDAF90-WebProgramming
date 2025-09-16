@@ -77,4 +77,5 @@ static parse(json: string): Salad[] {
   });
 }
 }
+
 export { Salad };
