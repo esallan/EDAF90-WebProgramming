@@ -64,10 +64,17 @@ class Salad {
    * @throws if json is not an array, or any of the objects do not
    * have the ingredients attribute
    */
-  static parse(json: string): Salad[] {
-    const list = JSON.parse(json);
-    return [];
+static parse(json: string): Salad[] {
+  const list = JSON.parse(json);
+  if (!Array.isArray(list)) {
+    throw new Error('Expected an array');
   }
+  return list.map((obj) => {
+    if (!obj || typeof obj !== 'object' || !('ingredients' in obj)) {
+      throw new Error('Missing ingredients');
+    }
+    return new Salad(obj.ingredients, obj.uuid);
+  });
 }
-
+}
 export { Salad };

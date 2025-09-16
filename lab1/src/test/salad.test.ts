@@ -92,6 +92,7 @@ test('info of a salad with Krutonger', ({ caesarSalad }) => {
     lactose: false,
   });
 });
+
 test('ceasar salad info', ({ caesarSalad }) => {
   expect(caesarSalad.info()).toStrictEqual({
     vegan: false,
@@ -105,9 +106,13 @@ test('parse an array of caesar salads', ({ caesarSalad }) => {
   const json = JSON.stringify(input);
   expect(Salad.parse(json)).toStrictEqual(input);
 });
+
+
 test('parse error, detect non array', ({ caesarSalad }) => {
   expect(() => Salad.parse(JSON.stringify(caesarSalad))).toThrowError();
 });
+
+
 test('parse error, detect missing inventory', ({ caesarSalad }) => {
   const json = '[{ "missingIngredients": {}}]';
   expect(() => Salad.parse(json)).toThrowError();
