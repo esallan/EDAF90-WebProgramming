@@ -5,9 +5,11 @@ import { inventory } from "../inventory";
 test("makeOptions({}, 'foundation')", () => {
   expect(makeOptions({}, "foundation")).toStrictEqual([]);
 });
+
 test("makeOptions({}, 'unknown type')", () => {
   expect(makeOptions({}, "foundation")).toStrictEqual([]);
 });
+
 test("makeOptions(inventory, 'foundation')", () => {
   expect(makeOptions(inventory, "foundation")).toStrictEqual([
     '<option value="Pasta" key="Pasta"> Pasta, 10 kr</option>',

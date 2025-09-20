@@ -6,9 +6,12 @@
     "clean": "rimraf ./dist ./node_modules && echo \"removed all compiled files and npm packages. To restor them, run npm install\""
   },
   "devDependencies": {
+    "bun": "^1.2.21",
     "rimraf": "^6.0.1",
     "typescript": "^5.9.2",
-    "vitest": "^3.2.4",
-    "bun": "^1.2.21"
+    "vitest": "^3.2.4"
+  },
+  "dependencies": {
+    "uuid": "^13.0.0"
   }
 }

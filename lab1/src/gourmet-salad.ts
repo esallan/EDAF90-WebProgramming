@@ -1,5 +1,5 @@
-import { IngredientInfo, Inventory } from './inventory';
-import { Salad } from './salad';
+import { IngredientInfo, Inventory } from "./inventory";
+import { Salad } from "./salad";
 
 interface GourmetIngredientInfo extends IngredientInfo {
   amount: number;
@@ -15,28 +15,43 @@ type PartialGourmetInventory = Readonly<
 class GourmetSalad extends Salad {
   protected readonly ingredients: PartialGourmetInventory;
 
-  constructor(init?: PartialGourmetInventory, uuid?: String) {
-    super(undefined, uuid);
-    this.ingredients = init ||  {};
+  constructor(init?: PartialGourmetInventory) {
+    super(init);
+    this.ingredients = init || {};
   }
-
+  //Duplicateed code - can be made easier
   add(name: string, info: IngredientInfo, amount = 1): GourmetSalad {
     const existing = this.ingredients[name as keyof GourmetInventory];
     const newAmount = (existing?.amount || 0) + amount;
-    
+
     // This line creates a new ingredient object by copying all properties from 'info'
     // and adding/updating the 'amount' property to reflect the new total amount.
     const updatedInfo: GourmetIngredientInfo = { ...info, amount: newAmount };
     const newIngredients: PartialGourmetInventory = {
       ...this.ingredients,
-       [name]: updatedInfo,
+      [name]: updatedInfo,
     } as PartialGourmetInventory;
 
     return new GourmetSalad(newIngredients);
   }
 
+  /**
+   add(name: string, info: IngredientInfo, amount = 1): GourmetSalad {
+    const updated = {...this.ingredients}; 
+    if(updated[name] !== undefined){
+      updated[name] = {...info, amount: updated[name].amount + amount}; //already exists
+    }else{ 
+      updated[name] = {...info, amount}; // doesn't exist 
+    }
+    return new GourmetSalad(updated);
+    }
+   */
+
   price(): number {
-    return Object.values(this.ingredients).reduce((sum, info) => sum + info.price * info.amount, 0)
+    return Object.values(this.ingredients).reduce(
+      (sum, info) => sum + info.price * info.amount,
+      0
+    );
   }
 }
 

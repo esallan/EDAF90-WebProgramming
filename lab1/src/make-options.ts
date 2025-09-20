@@ -1,6 +1,9 @@
-import { IngredientType, Inventory, inventory, PartialInventory } from "./inventory";
-
-// remove comment below to see printouts
+import {
+  IngredientType,
+  Inventory,
+  inventory,
+  PartialInventory,
+} from "./inventory";
 
 const names = Object.keys(inventory);
 names.forEach((name) => console.log(name));
@@ -15,7 +18,7 @@ const myString = `We have ${names
 console.log(myString);
 
 function makeOptions(
-  inventory: Inventory,
+  inventory: PartialInventory,
   type: IngredientType
 ): string[] {
   return Object.entries(inventory)
