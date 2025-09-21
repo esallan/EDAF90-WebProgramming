@@ -1,12 +1,14 @@
 import './App.css';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { inventory } from './inventory';
 import { Salad } from './salad';
 
 import ViewCart from './view-cart';
 import ComposeSalad from './compose-salad';
+//import { Button } from './components/ui/button';
+//import { cn } from './lib/utils';
 
 const initialCart = [
   new Salad()
@@ -33,7 +35,25 @@ const initialCart = [
 ];
 
 function App() {
-  const [cart, setCart] = useState<Salad[]>(initialCart);
+  const [cart, setCart] = useState<Salad[]>(initialCart); //part off the app state
+
+  /*const [count, setCount] = useState(0);
+  const [textSize, setTextSize] = useState('text-2xl');
+
+  
+  useEffect(() => {
+    console.log('USEFFECT!!!!!!!')
+    if (count > 5) {
+      setTextSize('text-4xl')
+    } else {
+      setTextSize('text-2xl')
+    }
+  }, [count])
+  
+  if (count === 0) {
+    return null;
+  }*/
+
   return (
     <div className="grid grid-rows-1 gap-4 max-w-5xl">
       <h1 className="text-3xl font-bold text-center ">Min egen salladsbar</h1>
@@ -44,3 +64,13 @@ function App() {
 }
 
 export default App;
+
+/*<div className={cn(`flex gap-2 items-center ${textSize}`)}>
+        <Button
+          onClick={() => setCount(count + 1)}
+        >Increase</Button>
+        {count}
+        <Button
+          onClick={() => setCount(count - 1)}
+        >Decrease</Button>
+      </div>*/

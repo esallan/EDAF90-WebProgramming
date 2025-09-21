@@ -41,39 +41,41 @@ function ViewCart({ cart }: PropsType) {
           <Table>
             {tableHead}
             <TableBody>
+              {cart.map((salad) => (
               <TableRow key="{salad.uuid}">
                 <TableCell className="font-normal">
-                  {/* remove protected from ingredients in Salad */}
-                  TODO: Sallad, Kycklingfilé, Bacon, Krutonger, Parmesan,
-                  Ceasardressing, Gurka
+                  {Object.keys(salad.ingredients).join(' ,')}
                 </TableCell>
 
                 <TableCell>
-                  <div>{/* not vegan */}</div>
-                </TableCell>
-
-                <TableCell>
-                  <div>
-                    <CircleCheckIcon className="text-primary m-auto"></CircleCheckIcon>
+                  <div>{salad.info().vegan ? (
+                    <CircleCheckIcon className='text-primary m-auto'/> ) : null}
                   </div>
                 </TableCell>
 
                 <TableCell>
-                  <div>
-                    <CircleCheckIcon className="text-primary m-auto"></CircleCheckIcon>
+                  <div>{salad.info().lactose ? (
+                    <CircleCheckIcon className="text-primary m-auto"></CircleCheckIcon>) : null}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div>{salad.info().gluten ? (
+                    <CircleCheckIcon className="text-primary m-auto"></CircleCheckIcon>) : null}
                   </div>
                 </TableCell>
 
                 <TableCell className="font-normal text-right tabular-nums">
-                  TODO kr
+                  {salad.price()}
                 </TableCell>
               </TableRow>
+              ))}
             </TableBody>
             <TableFooter>
               <TableRow>
                 <TableCell colSpan={4}>Totalt</TableCell>
                 <TableCell className="text-right tabular-nums">
-                  TODO kr
+                  {cart.reduce((total, salad) => total + salad.price() , 0)}
                 </TableCell>
               </TableRow>
             </TableFooter>
