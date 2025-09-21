@@ -44,7 +44,7 @@ function ViewCart({ cart }: PropsType) {
               {cart.map((salad) => (
               <TableRow key="{salad.uuid}">
                 <TableCell className="font-normal">
-                  {Object.keys(salad.ingredients).join(' ,')}
+                  {Object.keys(salad.ingredients).join(', ')}
                 </TableCell>
 
                 <TableCell>
