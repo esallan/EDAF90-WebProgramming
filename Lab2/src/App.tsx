@@ -6,7 +6,7 @@ import { inventory } from './inventory';
 import { Salad } from './salad';
 
 import ViewCart from './view-cart';
-import ComposeSalad from './compose-salad';
+import ComposeSalad from './salad-composition/compose-salad';
 //import { Button } from './components/ui/button';
 //import { cn } from './lib/utils';
 
