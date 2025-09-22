@@ -25,15 +25,13 @@ import { Salad } from './salad';
 import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from './components/ui/alert-dialog';
 import { AlertDialogAction, AlertDialogCancel, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
 
-function selectType(type: IngredientType, inventory: Inventory): string[] {
-  return ['copy ', 'the ', 'structure ', 'from ', 'lab 1 ', 'makeOptions '];
-}
+
 
 type PropType = {
   inventory: Inventory;
 };
 function ComposeSalad({ inventory }: PropType) {
-  const [foundation, setFoundation] = useState('Sallad');
+  const [foundation, setFoundation] = useState('');
   const [protein, setProtein] = useState('');
   const [extra, setExtra] = useState<PartialInventory>({});
   const [dressing, setDressing] = useState('');
@@ -59,12 +57,11 @@ function ComposeSalad({ inventory }: PropType) {
       ></SelectIngredient>
       <SelectIngredient
         label="Välj protein"
-        value={foundation}
-        options={baseNames}
-        onValueChange={setFoundation}
+        value={protein}
+        options={proteinNames}
+        onValueChange={setProtein}
         inventory={inventory}
       ></SelectIngredient>
-      foundation:{foundation}
         </CardContent>
       </Card>
   );
@@ -77,13 +74,17 @@ type SelectIngredientType = {
   options: string[];
   inventory: Inventory;
 };
+
+
 function SelectIngredient({
   label,
   value,
   onValueChange,
   options,
   inventory,
-}: SelectIngredientType) {
+}: 
+
+SelectIngredientType) {
   return (
     <Label className="grid grid-cols-1 gap-2 mb-4">
       <span className="text-base font-semibold -mb-1">{label}</span>
@@ -92,9 +93,11 @@ function SelectIngredient({
           <SelectValue placeholder="gör ett val" />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="{name}" key="{name}">
-            TODO, TODO kr
+          {options.map((name) => (
+          <SelectItem value={name} key={name}>
+            {name}, {inventory[name].price} kr
           </SelectItem>
+          ))}
         </SelectContent>
       </Select>
     </Label>
@@ -120,6 +123,15 @@ const addToCartButton = (
     </AlertDialogContent>
   </AlertDialog>
 );
+
+function selectType(
+  type: IngredientType, 
+  inventory: Inventory
+): string[] {
+  return Object.entries(inventory).filter(([_, info]) => info?.type === type)
+  .sort(([aName], [bName]) => aName.localeCompare(bName, "sv"))
+  .map(([name]) => name)
+}
 
 
 const cardHead = (
