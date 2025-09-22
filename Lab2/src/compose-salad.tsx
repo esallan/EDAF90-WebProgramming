@@ -15,12 +15,15 @@ import { Alert, AlertTitle } from './components/ui/alert';
 import { AlertCircleIcon } from 'lucide-react';
 import {
   Card,
+  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from './components/ui/card';
 import { Salad } from './salad';
+import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader } from './components/ui/alert-dialog';
+import { AlertDialogAction, AlertDialogCancel, AlertDialogDescription, AlertDialogTitle, AlertDialogTrigger } from '@radix-ui/react-alert-dialog';
 
 function selectType(type: IngredientType, inventory: Inventory): string[] {
   return ['copy ', 'the ', 'structure ', 'from ', 'lab 1 ', 'makeOptions '];
@@ -44,16 +47,26 @@ function ComposeSalad({ inventory }: PropType) {
   }
 
   return (
-    <form>
-      <SelectIngredient
+      <Card className = "w-full p-3">
+        {cardHead}
+        <CardContent>
+        <SelectIngredient
         label="Välj bas"
         value={foundation}
         options={baseNames}
         onValueChange={setFoundation}
         inventory={inventory}
       ></SelectIngredient>
+      <SelectIngredient
+        label="Välj protein"
+        value={foundation}
+        options={baseNames}
+        onValueChange={setFoundation}
+        inventory={inventory}
+      ></SelectIngredient>
       foundation:{foundation}
-    </form>
+        </CardContent>
+      </Card>
   );
 }
 
@@ -87,5 +100,34 @@ function SelectIngredient({
     </Label>
   );
 }
+
+const addToCartButton = (
+  <AlertDialog>
+    <AlertDialogTrigger asChild>
+      <Button>Skicka beställningen</Button>
+    </AlertDialogTrigger>
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle>Under utveckling</AlertDialogTitle>
+        <AlertDialogDescription>
+          Denna funktion implementeras under labb 4.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogAction>Continue</AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
+);
+
+
+const cardHead = (
+  <CardHeader>
+    <CardTitle>Komponera en sallad</CardTitle>
+    <CardDescription>Välj de ingredienser som ingår i salladen.</CardDescription>
+    <CardAction>{addToCartButton}</CardAction>
+  </CardHeader>
+);
 
 export default ComposeSalad;
