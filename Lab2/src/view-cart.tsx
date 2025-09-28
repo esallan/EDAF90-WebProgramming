@@ -42,7 +42,7 @@ function ViewCart({ cart }: PropsType) {
             {tableHead}
             <TableBody>
               {cart.map((salad) => (
-              <TableRow key="{salad.uuid}">
+              <TableRow key={salad.uuid.toString()}> 
                 <TableCell className="font-normal">
                   {Object.keys(salad.ingredients).join(', ')}
                 </TableCell>
@@ -92,7 +92,7 @@ function ViewCart({ cart }: PropsType) {
 const orderButton = (
   <AlertDialog>
     <AlertDialogTrigger asChild>
-      <Button>Skicka beställningen</Button>
+      <Button>Skicka beställningen TEST</Button>
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>
@@ -126,4 +126,5 @@ const cardHead = (
     <CardAction>{orderButton}</CardAction>
   </CardHeader>
 );
+
 export default ViewCart;

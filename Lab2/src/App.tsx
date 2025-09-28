@@ -11,6 +11,8 @@ import ComposeSalad from './salad-composition/compose-salad';
 //import { cn } from './lib/utils';
 
 const initialCart = [
+] as Salad[];
+  /*
   new Salad()
     .add('Sallad', inventory['Sallad'])
     .add('Kycklingfilé', inventory['Kycklingfilé'])
@@ -33,6 +35,7 @@ const initialCart = [
     .add('Lime', inventory['Lime'])
     .add('Örtvinägrett', inventory['Örtvinägrett']),
 ];
+*/
 
 function App() {
   const [cart, setCart] = useState<Salad[]>(initialCart); //part off the app state
@@ -58,8 +61,9 @@ function App() {
     <div className="grid grid-rows-1 gap-4 max-w-5xl">
       <h1 className="text-3xl font-bold text-center ">Min egen salladsbar</h1>
       <ViewCart cart={cart} />
-      <ComposeSalad inventory={inventory} />
-    </div>
+      <ComposeSalad inventory={inventory} 
+        addToCart={(newSalad: Salad) => setCart([...cart, newSalad])} />
+        </div>
   );
 }
 
