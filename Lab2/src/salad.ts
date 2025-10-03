@@ -12,7 +12,7 @@ class Salad {
   readonly ingredients: PartialInventory;
   readonly uuid;
 
-  constructor(init?: PartialInventory, uuid?: String) {
+  constructor(init?: PartialInventory, uuid?: string) {
     this.ingredients = init || {}; //ensures that ingridients is always an object and never null/undefined
     this.uuid = uuid ?? "salad_" + uuidv4(); //if uuid is null -> generate a new one
   }

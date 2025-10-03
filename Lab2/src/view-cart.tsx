@@ -29,7 +29,7 @@ import {
 } from './components/ui/table';
 import type { Salad } from './salad';
 import { CircleCheckIcon } from 'lucide-react';
-import { useState } from 'react';
+//import { useState } from 'react';
 
 type PropsType = { cart: Salad[] };
 function ViewCart({ cart }: PropsType) {
@@ -42,7 +42,7 @@ function ViewCart({ cart }: PropsType) {
             {tableHead}
             <TableBody>
               {cart.map((salad) => (
-              <TableRow key={salad.uuid.toString()}> 
+              <TableRow key={salad.uuid}> 
                 <TableCell className="font-normal">
                   {Object.keys(salad.ingredients).join(', ')}
                 </TableCell>

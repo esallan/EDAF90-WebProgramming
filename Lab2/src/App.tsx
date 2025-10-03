@@ -1,6 +1,6 @@
 
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { inventory } from './inventory';
 import { Salad } from './salad';

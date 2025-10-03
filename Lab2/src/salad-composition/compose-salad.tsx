@@ -1,5 +1,5 @@
 import type { IngredientType, Inventory, PartialInventory } from '../inventory';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '../components/ui/button';
 import {
   Card,
@@ -24,7 +24,7 @@ const CardHead = () => (
 
 function selectType(type: IngredientType, inventory: Inventory): string[] {
   return Object.entries(inventory)
-    .filter(([_, info]) => info?.type === type)
+    .filter(([, info]) => info?.type === type) //"_" konvention för att visa att nyckeln inte kommer användas 
     .sort(([aName], [bName]) => aName.localeCompare(bName, 'sv'))
     .map(([name]) => name);
 }
@@ -39,7 +39,8 @@ function ComposeSalad({ inventory, addToCart }: Props) {
   const [protein, setProtein] = useState('');
   const [extra, setExtra] = useState<PartialInventory>({});
   const [dressing, setDressing] = useState('');
-  const [hasSelectedAllRequired, setHasSelectedAllRequired] = useState(false);
+  
+  const [hasSelectedAllRequired, setHasSelectedAllRequired] = useState(false); 
 
   const baseNames = selectType('foundation', inventory);
   const proteinNames = selectType('protein', inventory);
@@ -56,12 +57,12 @@ function ComposeSalad({ inventory, addToCart }: Props) {
     }
   }
 
+  //använd bara useEffect om externt system 
   useEffect(() => {
     if (!foundation || !protein || !dressing) {
       setHasSelectedAllRequired(false);
       return;
     }
-
     if (Object.entries(extra).length < 2) {
       setHasSelectedAllRequired(false);
       return;
@@ -71,10 +72,36 @@ function ComposeSalad({ inventory, addToCart }: Props) {
     }
   }, [extra, foundation, protein, dressing]);
 
+
+
+  function handleSubmit(e : FormEvent<HTMLFormElement>){
+    e.preventDefault();
+
+    let newSalad = new Salad()
+                .add(foundation, inventory[foundation])
+                .add(protein, inventory[protein])
+                .add(dressing, inventory[dressing]);
+              
+                for (const [name, info] of Object.entries(extra)) {
+                  newSalad = newSalad.add(name, info);
+                }
+                
+                addToCart(newSalad);
+
+              // Rensa valen efter klick
+              setFoundation('');
+              setProtein('');
+              setDressing('');
+              setExtra({});
+
+  }
+
+
   return (
     <Card className="w-full p-3">
       <CardHead />
       <CardContent>
+        <form onSubmit={handleSubmit}>
         <SelectIngredient
           label="Välj bas"
           value={foundation}
@@ -97,18 +124,19 @@ function ComposeSalad({ inventory, addToCart }: Props) {
           </span>
           <div className="grid grid-cols-4 grid-rows-7 gap-2">
             {extraNames.map(name => (
-              <Label key={name}>
-                <Checkbox
-                  checked={Boolean(extra[name])}
-                  onCheckedChange={checked => {
-                    handleChangeExtra(name, Boolean(checked));}}
-                    aria-label={name}
-                />
+              <div key={name} className='flex flex-row gap-2'>
+                <Checkbox id={name}
+                checked={Boolean(extra[name])}
+                onCheckedChange={checked => {
+                  handleChangeExtra(name, Boolean(checked));}}
+              />
+              <Label htmlFor={name}>
                 <span>
                   {name}, {inventory[name].price} kr
                 </span>
               </Label>
-            ))}
+              </div>
+          ))}
           </div>
         </Label>
 
@@ -121,32 +149,11 @@ function ComposeSalad({ inventory, addToCart }: Props) {
         />
 
         <div className="flex justify-end mt-4">
-          <Button
-            disabled={!hasSelectedAllRequired}
-            onClick={() => {
-              let newSalad = new Salad()
-                .add(foundation, inventory[foundation])
-                .add(protein, inventory[protein])
-                .add(dressing, inventory[dressing]);
-              
-                for (const [name, info] of Object.entries(extra)) {
-                  newSalad = newSalad.add(name, info);
-                }
-
-              // Object.entries(extra).forEach(([name, info]) => newSalad.add(name, info));
-
-              addToCart(newSalad);
-
-              // Rensa valen efter klick
-              setFoundation('');
-              setProtein('');
-              setDressing('');
-              setExtra({});
-            }}
-          >
+          <Button type="submit">
             Lägg i varukorgen
           </Button>
         </div>
+        </form>
       </CardContent>
     </Card>
   );

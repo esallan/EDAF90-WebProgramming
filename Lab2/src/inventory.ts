@@ -78,7 +78,7 @@ type PartialInventory = Readonly<Record<keyof Inventory, IngredientInfo>>;
 // recursively freeze the data structure.
 function deepFreeze(obj: { [key: string]: any }) {
   Object.entries(obj).forEach(
-    ([name, prop]) => prop && typeof prop === 'object' && deepFreeze(prop)
+    ([, prop]) => prop && typeof prop === 'object' && deepFreeze(prop)
   );
   Object.freeze(obj);
 }
