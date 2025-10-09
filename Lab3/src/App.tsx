@@ -20,22 +20,22 @@ export function App() {
       <h1 className="text-3xl font-bold text-center mb-6">Min egen salladsbar</h1>
 
       {/* Navigation Menu med shadcn + react-router Link */}
-      <NavigationMenu className = "flex justify-center gap-12 mb-10 list-none">
+      <NavigationMenu className="flex justify-center gap-12 mb-2 list-none [&_a]:hover:underline [&_a]:hover:text-primary [&_a]:transition-color [&_a]:duration-300">
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
-            <Link to="/">Välkommen</Link>
-          </NavigationMenuLink>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <NavigationMenuLink asChild>
-            <Link to="/view-cart">Visa varukorg</Link>
+            <Link to="/">Hem</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
 
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Link to="/compose-salad">Komponera sallad</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+       
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/view-cart">Visa varukorg</Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenu>

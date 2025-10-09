@@ -116,6 +116,7 @@ function ComposeSalad() {
             options={baseNames}
             onValueChange={setFoundation}
             inventory={inventory}
+            valid={submitted && !!foundation}
             />
             {submitted && !foundation && (
               <Alert variant="destructive" className='border-none'>
@@ -129,6 +130,7 @@ function ComposeSalad() {
             options={proteinNames}
             onValueChange={setProtein}
             inventory={inventory}
+            valid={submitted && !!protein}
            />
            {submitted && !protein && (
               <Alert variant="destructive" className='border-none'>
@@ -169,6 +171,7 @@ function ComposeSalad() {
           options={dressingNames}
           onValueChange={setDressing}
           inventory={inventory}
+          valid={submitted && !!dressing}
         />
         {submitted && !dressing &&(
           <Alert variant="destructive" className="border-none">

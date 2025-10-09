@@ -8,6 +8,7 @@ type SelectIngredientType = {
     onValueChange: (value: string) => void;
     options: string[];
     inventory: Inventory;
+    valid: boolean;
 };
 
 export function SelectIngredient({
@@ -15,14 +16,15 @@ export function SelectIngredient({
     value,
     onValueChange,
     options,
-    inventory
+    inventory,
+    valid
 }: SelectIngredientType) {
     return (
       <Label className="grid grid-cols-2 mb-1">
         <span className="text-base font-semibold -mb-1">{label}</span>
         <Select required name={label} value={value} onValueChange={onValueChange}>
         <span aria-hidden="true">* </span> 
-        <SelectTrigger aria-invalid={true} className="w-sm">
+        <SelectTrigger aria-invalid={!valid} className="w-sm">
           <SelectValue placeholder={"gör ett val"} />
         </SelectTrigger>
         <SelectContent>

@@ -28,11 +28,12 @@ import {
   TableRow,
 } from './components/ui/table';
 import type { Salad } from './salad';
-import { Badge, CircleCheckIcon } from 'lucide-react';
+import { CircleCheckIcon } from 'lucide-react';
 import { useOutletContext } from 'react-router';
 import type { Inventory } from './inventory';
 import { useParams } from 'react-router-dom';
 import { Alert, AlertDescription } from './components/ui/alert';
+import { Badge } from './components/ui/badge';
 
 
 type PropsType = { inventory: Inventory;
