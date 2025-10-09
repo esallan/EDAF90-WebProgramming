@@ -1,0 +1,34 @@
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem } from "@/components/ui/select";
+import type { Inventory } from "@/inventory";
+
+type SelectIngredientType = {
+    label: string;
+    value: string;
+    onValueChange: (value: string) => void;
+    options: string[];
+    inventory: Inventory;
+};
+
+export function IngredientCheckboxGroup({
+    label,
+    value,
+    onValueChange,
+    options,
+    inventory
+}: SelectIngredientType) {
+    return (
+      <Label className="grid grid-cols-1 gap-2 mb-4">
+        <span className="text-base font-semibold -mb-1">{label}</span>
+        <Select required name={label} value={value} onValueChange={onValueChange}>
+          <SelectContent>
+            {options.map((name) => (
+            <SelectItem value={name} key={name}>
+            {name}, {inventory[name].price} kr
+          </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </Label>
+    );
+  }

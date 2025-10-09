@@ -1,0 +1,65 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.js
+react-jsx
+
+# Node / React / Next.js
+node_modules/
+dist/
+.build/
+out/
+.next/
+*.js.map
+*.profiling.js
+
+# Temporära / genererade filer
+*.browser.*
+*.server.*
+
+# Node
+node_modules/
+
+# Build / output folders
+dist/
+out/
+.next/
+
+# log files
+*.log
+
+# IDE / editor
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+
+# Generated files
+*.js.map
+*.profiling.js
+*.browser.*
+*.server.*
+
+
