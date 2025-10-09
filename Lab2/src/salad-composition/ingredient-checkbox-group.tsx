@@ -20,10 +20,7 @@ export function IngredientCheckboxGroup({
     return (
       <Label className="grid grid-cols-1 gap-2 mb-4">
         <span className="text-base font-semibold -mb-1">{label}</span>
-        <Select name={label} value={value} onValueChange={onValueChange}>
-          <SelectTrigger className="w-sm">
-            <SelectValue placeholder="gör ett val" />
-          </SelectTrigger>
+        <Select required name={label} value={value} onValueChange={onValueChange}>
           <SelectContent>
             {options.map((name) => (
             <SelectItem value={name} key={name}>

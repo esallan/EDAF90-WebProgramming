@@ -28,23 +28,45 @@ import {
   TableRow,
 } from './components/ui/table';
 import type { Salad } from './salad';
-import { CircleCheckIcon } from 'lucide-react';
-//import { useState } from 'react';
+import { Badge, CircleCheckIcon } from 'lucide-react';
+import { useOutletContext } from 'react-router';
+import type { Inventory } from './inventory';
+import { useParams } from 'react-router-dom';
+import { Alert, AlertDescription } from './components/ui/alert';
 
-type PropsType = { cart: Salad[] };
-function ViewCart({ cart }: PropsType) {
+
+type PropsType = { inventory: Inventory;
+  cart: Salad[];
+  addSalad: (s: Salad) => void; };
+
+function ViewCart() {
+  const { cart } = useOutletContext<PropsType>();
+  const { saladId } = useParams<{ saladId: string }>();
+  const newSalad = cart.find(s => s.uuid === saladId);
+
   return (
     <>
       <Card className="w-full p-3">
         {cardHead}
         <CardContent>
+          {newSalad && (
+            <Alert className="mb-4">
+              <AlertDescription> En ny sallad har lagts till i varukorgen <br/> Den kostar {newSalad.price()} kr </AlertDescription>
+            </Alert>)}
           <Table>
             {tableHead}
             <TableBody>
               {cart.map((salad) => (
-              <TableRow key={salad.uuid}> 
+              <TableRow
+                key={salad.uuid}
+              >
                 <TableCell className="font-normal">
                   {Object.keys(salad.ingredients).join(', ')}
+                  {salad.uuid === saladId && (
+                    <Badge className="ml-2" >
+                      Ny!
+                    </Badge>
+                  )}
                 </TableCell>
 
                 <TableCell>
@@ -92,7 +114,7 @@ function ViewCart({ cart }: PropsType) {
 const orderButton = (
   <AlertDialog>
     <AlertDialogTrigger asChild>
-      <Button>Skicka beställningen TEST</Button>
+      <Button>Skicka beställningen</Button>
     </AlertDialogTrigger>
     <AlertDialogContent>
       <AlertDialogHeader>

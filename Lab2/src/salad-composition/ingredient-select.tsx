@@ -1,6 +1,6 @@
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Inventory } from "@/inventory";
+import type { Inventory } from "@/inventory";
 
 type SelectIngredientType = {
     label: string;
@@ -18,19 +18,20 @@ export function SelectIngredient({
     inventory
 }: SelectIngredientType) {
     return (
-      <Label className="grid grid-cols-1 gap-2 mb-4">
+      <Label className="grid grid-cols-2 mb-1">
         <span className="text-base font-semibold -mb-1">{label}</span>
-        <Select name={label} value={value} onValueChange={onValueChange}>
-          <SelectTrigger className="w-sm">
-            <SelectValue placeholder="gör ett val" />
-          </SelectTrigger>
-          <SelectContent>
+        <Select required name={label} value={value} onValueChange={onValueChange}>
+        <span aria-hidden="true">* </span> 
+        <SelectTrigger aria-invalid={true} className="w-sm">
+          <SelectValue placeholder={"gör ett val"} />
+        </SelectTrigger>
+        <SelectContent>
             {options.map((name) => (
-            <SelectItem value={name} key={name}>
+          <SelectItem value={name} key={name}>
             {name}, {inventory[name].price} kr
           </SelectItem>
             ))}
-          </SelectContent>
+        </SelectContent>
         </Select>
       </Label>
     );

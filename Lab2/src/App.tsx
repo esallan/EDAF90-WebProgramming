@@ -1,80 +1,55 @@
-
-
 import { useState } from 'react';
-
+import { Outlet, Link } from 'react-router-dom';
+import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@radix-ui/react-navigation-menu';
+import ComposeSalad from './salad-composition/compose-salad';
+import ViewCart from './view-cart';
 import { inventory } from './inventory';
 import { Salad } from './salad';
 
-import ViewCart from './view-cart';
-import ComposeSalad from './salad-composition/compose-salad';
-//import { Button } from './components/ui/button';
-//import { cn } from './lib/utils';
 
-const initialCart = [
-] as Salad[];
-  /*
-  new Salad()
-    .add('Sallad', inventory['Sallad'])
-    .add('Kycklingfilé', inventory['Kycklingfilé'])
-    .add('Bacon', inventory['Bacon'])
-    .add('Krutonger', inventory['Krutonger'])
-    .add('Parmesan', inventory['Parmesan'])
-    .add('Ceasardressing', inventory['Ceasardressing'])
-    .add('Gurka', inventory['Gurka']),
-  new Salad()
-    .add('Sallad + Quinoa', inventory['Sallad + Quinoa'])
-    .add('Kycklingfilé', inventory['Kycklingfilé'])
-    .add('Cashewnötter', inventory['Cashewnötter'])
-    .add('Fetaost', inventory['Fetaost'])
-    .add('Sojabönor', inventory['Sojabönor'])
-    .add('Ceasardressing', inventory['Ceasardressing']),
-  new Salad()
-    .add('Sallad', inventory['Sallad'])
-    .add('Marinerad bönmix', inventory['Marinerad bönmix'])
-    .add('Avocado', inventory['Avocado'])
-    .add('Lime', inventory['Lime'])
-    .add('Örtvinägrett', inventory['Örtvinägrett']),
-];
-*/
+const initialCart: Salad[] = [];
 
-function App() {
-  const [cart, setCart] = useState<Salad[]>(initialCart); //part off the app state
+export function App() {
+  const [cart, setCart] = useState<Salad[]>(initialCart);
 
-  /*const [count, setCount] = useState(0);
-  const [textSize, setTextSize] = useState('text-2xl');
-
-  
-  useEffect(() => {
-    console.log('USEFFECT!!!!!!!')
-    if (count > 5) {
-      setTextSize('text-4xl')
-    } else {
-      setTextSize('text-2xl')
-    }
-  }, [count])
-  
-  if (count === 0) {
-    return null;
-  }*/
+  function addSalad(salad: Salad) {
+    setCart([...cart, salad]);
+  }
 
   return (
-    <div className="grid grid-rows-1 gap-4 max-w-5xl">
-      <h1 className="text-3xl font-bold text-center ">Min egen salladsbar</h1>
-      <ViewCart cart={cart} />
-      <ComposeSalad inventory={inventory} 
-        addToCart={(newSalad: Salad) => setCart([...cart, newSalad])} />
-        </div>
+    <div className="max-w-5xl mx-auto p-4">
+      {/* Rubrik */}
+      <h1 className="text-3xl font-bold text-center mb-6">Min egen salladsbar</h1>
+
+      {/* Navigation Menu med shadcn + react-router Link */}
+      <NavigationMenu className = "flex justify-center gap-12 mb-10 list-none">
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/">Välkommen</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/view-cart">Visa varukorg</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+
+        <NavigationMenuItem>
+          <NavigationMenuLink asChild>
+            <Link to="/compose-salad">Komponera sallad</Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenu>
+    
+      
+
+      {/* Outlet för att rendera barnsidor */}
+      <Outlet context={{ inventory, cart, addSalad }} />
+      
+      
+    </div>
   );
 }
 
 export default App;
-
-/*<div className={cn(`flex gap-2 items-center ${textSize}`)}>
-        <Button
-          onClick={() => setCount(count + 1)}
-        >Increase</Button>
-        {count}
-        <Button
-          onClick={() => setCount(count - 1)}
-        >Decrease</Button>
-      </div>*/

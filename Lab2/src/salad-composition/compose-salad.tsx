@@ -13,6 +13,10 @@ import { SelectIngredient } from './ingredient-select';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Salad } from '@/salad';
+import { useNavigate, useOutletContext } from 'react-router-dom';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Info } from 'lucide-react';
+
 
 const CardHead = () => (
   <CardHeader>
@@ -29,23 +33,28 @@ function selectType(type: IngredientType, inventory: Inventory): string[] {
     .map(([name]) => name);
 }
 
-type Props = {
+type PropsType = {
   inventory: Inventory;
-  addToCart: (salad: Salad) => void;
+  addSalad: (salad: Salad) => void;
 };
 
-function ComposeSalad({ inventory, addToCart }: Props) {
+function ComposeSalad() {
+  const { inventory, addSalad} = useOutletContext<PropsType>();
+
   const [foundation, setFoundation] = useState('');
   const [protein, setProtein] = useState('');
   const [extra, setExtra] = useState<PartialInventory>({});
   const [dressing, setDressing] = useState('');
   
-  const [hasSelectedAllRequired, setHasSelectedAllRequired] = useState(false); 
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [submitted, setSubmitted] = useState(false);
 
   const baseNames = selectType('foundation', inventory);
   const proteinNames = selectType('protein', inventory);
   const extraNames = selectType('extra', inventory);
   const dressingNames = selectType('dressing', inventory);
+
+  const navigate = useNavigate();
 
   function handleChangeExtra(name: string, checked: boolean) {
     if (checked) {
@@ -57,25 +66,20 @@ function ComposeSalad({ inventory, addToCart }: Props) {
     }
   }
 
-  //använd bara useEffect om externt system 
-  useEffect(() => {
+  function handleSubmit(e : FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    setSubmitted(true);
+
     if (!foundation || !protein || !dressing) {
-      setHasSelectedAllRequired(false);
+      setErrorMessage("Vänligen gör ett val");
       return;
     }
     if (Object.entries(extra).length < 2) {
-      setHasSelectedAllRequired(false);
-      return;
-    } else {
-      setHasSelectedAllRequired(true);
+      setErrorMessage("Vänligen välj minst två extra ingredienser")
       return;
     }
-  }, [extra, foundation, protein, dressing]);
 
-
-
-  function handleSubmit(e : FormEvent<HTMLFormElement>){
-    e.preventDefault();
+    setErrorMessage("");
 
     let newSalad = new Salad()
                 .add(foundation, inventory[foundation])
@@ -86,7 +90,9 @@ function ComposeSalad({ inventory, addToCart }: Props) {
                   newSalad = newSalad.add(name, info);
                 }
                 
-                addToCart(newSalad);
+                addSalad(newSalad);
+
+                navigate(`/view-cart/${newSalad.uuid}`);
 
               // Rensa valen efter klick
               setFoundation('');
@@ -102,25 +108,36 @@ function ComposeSalad({ inventory, addToCart }: Props) {
       <CardHead />
       <CardContent>
         <form onSubmit={handleSubmit}>
-        <SelectIngredient
-          label="Välj bas"
-          value={foundation}
-          options={baseNames}
-          onValueChange={setFoundation}
-          inventory={inventory}
-        />
+          
+            <SelectIngredient
+            label="Välj bas"
+            value={foundation}
+            options={baseNames}
+            onValueChange={setFoundation}
+            inventory={inventory}
+            />
+            {submitted && !foundation && (
+              <Alert variant="destructive" className='border-none'>
+              <AlertDescription><div className="flex gap-1 items-center"><Info className='h-4 w-4'/><span>Gör ett val</span></div></AlertDescription>
+              </Alert>
+            )}
 
-        <SelectIngredient
-          label="Välj protein"
-          value={protein}
-          options={proteinNames}
-          onValueChange={setProtein}
-          inventory={inventory}
-        />
+            <SelectIngredient
+            label="Välj protein"
+            value={protein}
+            options={proteinNames}
+            onValueChange={setProtein}
+            inventory={inventory}
+           />
+           {submitted && !protein && (
+              <Alert variant="destructive" className='border-none'>
+              <AlertDescription><div className="flex gap-1 items-center"><Info className='h-4 w-4'/><span>Gör ett val</span></div></AlertDescription>
+              </Alert>
+            )}
 
         <Label className="grid grid-cols-1 gap-2 mb-4">
           <span className="text-base font-semibold mb-1">
-            Välj minst två extra ingredienser
+            Välj minst två extra ingredienser*
           </span>
           <div className="grid grid-cols-4 grid-rows-7 gap-2">
             {extraNames.map(name => (
@@ -130,6 +147,7 @@ function ComposeSalad({ inventory, addToCart }: Props) {
                 onCheckedChange={checked => {
                   handleChangeExtra(name, Boolean(checked));}}
               />
+             
               <Label htmlFor={name}>
                 <span>
                   {name}, {inventory[name].price} kr
@@ -137,22 +155,31 @@ function ComposeSalad({ inventory, addToCart }: Props) {
               </Label>
               </div>
           ))}
-          </div>
+          </div>{submitted && Object.entries(extra).length < 2 && (
+              <Alert variant="destructive" className='border-none'>
+              <AlertDescription><div className="flex gap-1 items-center"><Info className='h-4 w-4'/><span>Välj minst två</span></div></AlertDescription>
+              </Alert>
+            )}
         </Label>
 
         <SelectIngredient
-          label="Välj dressing"
+          label= {"Välj dressing"}
           value={dressing}
           options={dressingNames}
           onValueChange={setDressing}
           inventory={inventory}
         />
-
+        {submitted && !dressing &&(
+          <Alert variant="destructive" className="border-none">
+              <AlertDescription><div className="flex gap-1 items-center"><Info className='h-4 w-4'/><span>Gör ett val</span></div></AlertDescription>
+              </Alert>
+        )}
         <div className="flex justify-end mt-4">
           <Button type="submit">
             Lägg i varukorgen
           </Button>
         </div>
+       
         </form>
       </CardContent>
     </Card>
