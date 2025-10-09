@@ -1,8 +1,6 @@
 import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@radix-ui/react-navigation-menu';
-import ComposeSalad from './salad-composition/compose-salad';
-import ViewCart from './view-cart';
 import { inventory } from './inventory';
 import { Salad } from './salad';
 

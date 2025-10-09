@@ -1,5 +1,5 @@
 import type { IngredientType, Inventory, PartialInventory } from '../inventory';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Button } from '../components/ui/button';
 import {
   Card,
@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Salad } from '@/salad';
 import { useNavigate, useOutletContext } from 'react-router-dom';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Info } from 'lucide-react';
 
 
@@ -46,7 +46,7 @@ function ComposeSalad() {
   const [extra, setExtra] = useState<PartialInventory>({});
   const [dressing, setDressing] = useState('');
   
-  const [errorMessage, setErrorMessage] = useState(""); 
+  const [, setErrorMessage] = useState(""); 
   const [submitted, setSubmitted] = useState(false);
 
   const baseNames = selectType('foundation', inventory);
